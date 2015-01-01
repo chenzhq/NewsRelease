@@ -1,26 +1,62 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 <html>
-  <head>
-    <base href="<%=basePath%>">
-    
-    <title>My JSP 'index.jsp' starting page</title>
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
-  </head>
-  
-  <body>
-    This is my JSP page. <br>
-  </body>
+<head>
+<meta charset="utf-8">
+<title>新闻发布系统</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="resources/css/bootstrap.css" rel="stylesheet">
+<script src="resources/js/jquery.min.js"></script>
+</head>
+<body>
+	<form id="login">
+	    <label for="username">用户名:</label>
+		<input type="text"  name="username"  placeholder="请输入用户名"  required/>
+		<label for="pwd">密码：</label>
+		<input type="password"  name="pwd" required/>
+		<input type="submit" value="登录">
+	</form>
+	<script>
+	$.fn.serializeObject = function()
+					{
+					   var o = {};
+					   var a = this.serializeArray();
+					   $.each(a, function() {
+					       if (o[this.name]) {
+					           if (!o[this.name].push) {
+					               o[this.name] = [o[this.name]];
+					           }
+					           o[this.name].push(this.value || '');
+					       } else {
+					           o[this.name] = this.value || '';
+					       }
+					   });
+					   return o;
+					};
+		$('#login').on('submit', function(event) {
+			event.preventDefault();
+			console.log(JSON.stringify($('#login').serializeObject()));
+			$.ajax({
+				url: 'userLogin',
+				type: 'POST',
+				dataType: 'json',
+				contentType:'application/json;charset=UTF-8',
+				data: JSON.stringify($('#login').serializeObject()),
+				success: function(data) {
+					console.info('success');
+				},
+				error: function(data) {
+					console.error(data);
+				}
+			});
+			
+		});		
+	</script>
+</body>
 </html>

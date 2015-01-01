@@ -5,14 +5,19 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+
 
 import com.newsRelease.dao.IBaseDao;
 
 
-public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
+public class BaseDao<T> implements IBaseDao<T> {
 	
 	private static final Logger log = LoggerFactory.getLogger(BaseDao.class);
+	
+	@Autowired
+	private HibernateTemplate hibernateTemplate;
 	
 	private Class<T> entityClass;
 
@@ -85,8 +90,8 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		log.debug("finding Model instance with property: " + propertyName
 				+ ", value: " + value);
 		try {
-			String queryString = "from " + entityClass + " as model where model."
-					+ propertyName + "= ?";
+			String queryString = "from " + entityClass.getSimpleName() + " as model where model."
+					+ propertyName + "= ?";			
 			return (List<T>)getHibernateTemplate().find(queryString, value);
 		} catch (RuntimeException re) {
 			log.error("find by property name failed", re);
@@ -147,4 +152,12 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	/*public static UserDAO getFromApplicationContext(ApplicationContext ctx) {
 		return (UserDAO) ctx.getBean("UserDAO");
 	}*/
+	public HibernateTemplate getHibernateTemplate() {
+		return hibernateTemplate;
+	}
+
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
+		this.hibernateTemplate = hibernateTemplate;
+	}
+   
 }
