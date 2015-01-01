@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+	<!-- 自动扫描dao.imp包下所有标注@Repository的DAO组件 -->
+	<context:component-scan base-package="com.newsRelease.dao.imp"/>
+	
+	<!-- 定义数据源 -->
+	<bean id="dataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource" lazy-init="false" destroy-method="close">		
+		<property name="user" value="root"/>
+		<property name="password" value="7231"/>
+		<property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/newsrelease"/>	
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+		<property name="annotatedClasses">
+			<list>
+				<value>com.newsRelease.model.Comment</value></list>
+		</property></bean>
+	
+	<!-- 配置HibernateTemplate Bean -->
+	<bean id="hibernateTemplate"
+		class="org.springframework.orm.hibernate3.HibernateTemplate"
+		abstract="false" lazy-init="default" autowire="default"
+		p:sessionFactory-ref="sessionFactory">
+	</bean>
+	
+
+	</beans>

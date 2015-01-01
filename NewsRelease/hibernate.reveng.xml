@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+
+	<table name="news" catalog="newsrelease" class="News">
+		<primary-key>
+			<generator class="native"></generator>
+
+
+
+			<key-column name="news_id" jdbc-type="CHAR"
+				property="newsId" type="string" />
+		</primary-key>
+		<column name="news_title" jdbc-type="VARCHAR" property="title"
+			type="string">
+		</column>
+		<column name="manager_id" property="managerId" jdbc-type="CHAR"
+			type="string">
+		</column>
+		<column name="news_content" jdbc-type="longtext"
+			property="content" type="string">
+		</column>
+		<column name="news_pub_time" jdbc-type="datetime"
+			property="pub_time" type="date">
+		</column>
+	</table>
+	<table name="comment" catalog="newsrelease" class="Comment">
+		<primary-key>
+			<generator class="native"></generator>
+
+			<key-column name="news_id" jdbc-type="CHAR"
+				property="newsId" type="string" />
+			<key-column name="user_id" jdbc-type="CHAR"
+				property="userId" type="string" />
+		</primary-key>
+		<column name="comment_content" jdbc-type="VARCHAR"
+			property="content" type="string">
+		</column>
+		<column name="comment_pub_time" jdbc-type="datetime"
+			property="pubTime" type="date">
+		</column>
+	</table>
+	<table name="manager" catalog="newsrelease" class="Manager">
+		<primary-key>
+			<generator class="native"></generator>
+			<key-column name="manager_id" jdbc-type="CHAR"
+				property="managerId" type="string" />
+		</primary-key>
+		<column name="name" jdbc-type="CHAR" property="managerName"
+			type="string">
+		</column>
+		<column name="pwd" jdbc-type="VARCHAR" property="managerPwd"
+			type="string">
+		</column>
+		<column name="authority" jdbc-type="tinyint"
+			property="authority" type="byte">
+		</column>
+	</table>
+	<table name="user" catalog="newsrelease" class="User">
+		<primary-key>
+			<generator class="native"></generator>
+
+
+			<key-column name="user_id" jdbc-type="CHAR"
+				property="userId" type="string" />
+		</primary-key>
+		<column name="name" jdbc-type="CHAR" property="userName"
+			type="string">
+		</column>
+		<column name="pwd" jdbc-type="VARCHAR" property="userPwd"
+			type="string">
+		</column>
+		<column name="authority" jdbc-type="tinyint"
+			property="authority" type="byte">
+		</column>
+		<column name="sex" jdbc-type="tinyint" property="sex"
+			type="byte">
+		</column>
+		<column name="reg_time" jdbc-type="datetime" property="reg_time"
+			type="date">
+		</column>
+	</table>
+	<table name="photos" catalog="newsrelease" class="Photo">
+		<primary-key>
+			<generator class="native"></generator>
+			<key-column name="photo_id" jdbc-type="var"
+				property="photoId" type="string" />
+		</primary-key>
+		<column name="news_id" jdbc-type="CHAR" property="newsId"
+			type="string">
+		</column>
+		<column name="photo" jdbc-type="longblob" property="photo" type=" blob"></column>
+	</table>
+</hibernate-reverse-engineering>
