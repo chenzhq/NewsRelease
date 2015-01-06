@@ -33,4 +33,10 @@
 	    </property>  
 	</bean>
 
-</beans>
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+		abstract="false" lazy-init="default" autowire="default"
+		p:defaultEncoding="UTF-8" p:maxUploadSize="2121880"
+		p:uploadTempDir="upload/temp/">
+	</bean>
+	</beans>

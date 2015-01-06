@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 /**
  * Manager entity. @author MyEclipse Persistence Tools
  */
@@ -56,8 +58,9 @@ public class Manager extends com.newsRelease.model.BaseModel implements
 
 	// Property accessors
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "manager_id", unique = true, nullable = false, length = 20)
+	@GeneratedValue(generator = "paymentableGenerator")
+	@GenericGenerator(name = "paymentableGenerator", strategy="uuid")
+	@Column(name = "manager_id", unique = true, nullable = false, length = 128)
 	public String getManagerId() {
 		return this.managerId;
 	}

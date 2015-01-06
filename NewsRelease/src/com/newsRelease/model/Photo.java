@@ -10,12 +10,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 /**
  * Photos entity. @author MyEclipse Persistence Tools
  */
 @Entity
 @Table(name = "photos", catalog = "newsrelease")
-public class Photo extends com.newsRelease.model.BaseModel implements
+public class Photo extends BaseModel implements
 		java.io.Serializable {
 
 	// Fields
@@ -42,8 +44,9 @@ public class Photo extends com.newsRelease.model.BaseModel implements
 
 	// Property accessors
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "photo_id", unique = true, nullable = false, length = 20)
+	@GeneratedValue(generator = "paymentableGenerator")
+	@GenericGenerator(name = "paymentableGenerator", strategy="uuid")
+	@Column(name = "photo_id", unique = true, nullable = false, length = 128)
 	public String getPhotoId() {
 		return this.photoId;
 	}
@@ -62,7 +65,7 @@ public class Photo extends com.newsRelease.model.BaseModel implements
 		this.news = news;
 	}
 
-	@Column(name = "photo", nullable = false)
+	@Column(name = "photo", nullable = false, length=100)
 	public String getPhoto() {
 		return this.photo;
 	}

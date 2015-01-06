@@ -4,7 +4,7 @@ package com.newsRelease.dao.imp;
 
 import org.springframework.stereotype.Repository;
 
-import com.newsRelease.dao.IBaseDao;
+
 import com.newsRelease.dao.IUserDao;
 import com.newsRelease.model.User;
 

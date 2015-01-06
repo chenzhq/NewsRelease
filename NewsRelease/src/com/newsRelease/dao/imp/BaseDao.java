@@ -104,7 +104,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 	public List<T> findAll() {
 		log.debug("finding all Model instances");
 		try {
-			String queryString = "from " + entityClass;
+			String queryString = "from " + entityClass.getSimpleName();
 			return getHibernateTemplate().find(queryString);
 		} catch (RuntimeException re) {
 			log.error("find all failed", re);

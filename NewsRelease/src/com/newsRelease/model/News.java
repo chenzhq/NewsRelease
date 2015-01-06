@@ -9,19 +9,20 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 /**
  * News entity. @author MyEclipse Persistence Tools
  */
 @Entity
 @Table(name = "news", catalog = "newsrelease")
-public class News extends com.newsRelease.model.BaseModel implements
+public class News extends BaseModel implements
 		java.io.Serializable {
 
 	// Fields
@@ -34,6 +35,7 @@ public class News extends com.newsRelease.model.BaseModel implements
 	private Manager manager;
 	private String newsTitle;
 	private String newsContent;
+	private String newsStyle;
 	private Timestamp newsPubTime;
 	private Set<Photo> photoses = new HashSet<Photo>(0);
 	private Set<Comment> comments = new HashSet<Comment>(0);
@@ -46,19 +48,22 @@ public class News extends com.newsRelease.model.BaseModel implements
 
 	/** minimal constructor */
 	public News(Manager manager, String newsTitle, String newsContent,
-			Timestamp newsPubTime) {
+			String newsStyle, Timestamp newsPubTime) {
 		this.manager = manager;
 		this.newsTitle = newsTitle;
 		this.newsContent = newsContent;
+		this.newsStyle = newsStyle;
 		this.newsPubTime = newsPubTime;
 	}
 
 	/** full constructor */
 	public News(Manager manager, String newsTitle, String newsContent,
-			Timestamp newsPubTime, Set<Photo> photoses, Set<Comment> comments) {
+			String newsStyle, Timestamp newsPubTime, Set<Photo> photoses,
+			Set<Comment> comments) {
 		this.manager = manager;
 		this.newsTitle = newsTitle;
 		this.newsContent = newsContent;
+		this.newsStyle = newsStyle;
 		this.newsPubTime = newsPubTime;
 		this.photoses = photoses;
 		this.comments = comments;
@@ -66,8 +71,9 @@ public class News extends com.newsRelease.model.BaseModel implements
 
 	// Property accessors
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "news_id", unique = true, nullable = false, length = 20)
+	@GeneratedValue(generator = "paymentableGenerator")
+	@GenericGenerator(name = "paymentableGenerator", strategy="uuid")
+	@Column(name = "news_id", unique = true, nullable = false, length = 128)
 	public String getNewsId() {
 		return this.newsId;
 	}
@@ -86,7 +92,7 @@ public class News extends com.newsRelease.model.BaseModel implements
 		this.manager = manager;
 	}
 
-	@Column(name = "news_title", nullable = false, length = 18)
+	@Column(name = "news_title", nullable = false, length = 30)
 	public String getNewsTitle() {
 		return this.newsTitle;
 	}
@@ -102,6 +108,15 @@ public class News extends com.newsRelease.model.BaseModel implements
 
 	public void setNewsContent(String newsContent) {
 		this.newsContent = newsContent;
+	}
+
+	@Column(name = "news_style", nullable = false, length = 20)
+	public String getNewsStyle() {
+		return this.newsStyle;
+	}
+
+	public void setNewsStyle(String newsStyle) {
+		this.newsStyle = newsStyle;
 	}
 
 	@Column(name = "news_pub_time", nullable = false, length = 19)

@@ -248,7 +248,7 @@
 						$(this).parent().next().find(".Validform_checktip").remove();
 					}
 				}
-			})
+			});
 			
 			//表单元素值比较时的信息提示增强;
 			curform.find("input[recheck]").each(function(){

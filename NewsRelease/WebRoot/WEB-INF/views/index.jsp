@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -15,12 +16,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script src="resources/js/jquery.min.js"></script>
 </head>
 <body>
+	<c:forEach items="${new01}" var="NewsItem">
+	<span>${ NewsItem.newsContent}</span>
+	</c:forEach>
+	<%-- ${news[0].newsTitle} --%>
 	<form id="login">
 	    <label for="username">用户名:</label>
 		<input type="text"  name="username"  placeholder="请输入用户名"  required/>
 		<label for="pwd">密码：</label>
 		<input type="password"  name="pwd" required/>
-		<input type="submit" value="登录">
+		<input type="submit" value="登录"/>
 	</form>
 	<script>
 	$.fn.serializeObject = function()
