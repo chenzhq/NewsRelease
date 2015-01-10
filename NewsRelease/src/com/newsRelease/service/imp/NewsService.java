@@ -59,4 +59,8 @@ public class NewsService {
 		}
 		return map;
 	}
+	
+	public News findNewsById(String id) {
+		return newsDao.findById(id);
+	}
 }

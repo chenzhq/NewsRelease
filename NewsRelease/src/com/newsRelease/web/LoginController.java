@@ -42,11 +42,11 @@ public class LoginController {
 	 * @return
 	 * @throws JSONException
 	 */
-	@RequestMapping(value="/userLogin",method=RequestMethod.POST)
-	public @ResponseBody ModelMap userLogin(@RequestBody String login_Info,HttpSession session) throws JSONException {
-//		System.out.println(login_Info);
+	@RequestMapping(value="user/userLogin",method=RequestMethod.POST)
+	public @ResponseBody ModelMap userLogin(@RequestBody String login_Info , ModelMap mm, HttpSession session) throws JSONException {
+		System.out.println(login_Info);
 		JSONObject json = new JSONObject(login_Info);
-		ModelMap mm = new ModelMap();
+//		ModelMap mm = new ModelMap();
 		User user = userServ.findByUserName(json.getString("username"));
 		if(user == null) {
 			mm.addAttribute("msg", "userNotExist");
@@ -57,7 +57,8 @@ public class LoginController {
 		}else {
 			session.setAttribute("loginUser", user);
 			mm.addAttribute("msg", "success");
-			mm.addAttribute("loginUser", user);
+			mm.addAttribute("userId", user.getUserId());
+			mm.addAttribute("userName", user.getName());
 			System.out.println("登录成功");
 		}
 		System.out.println(mm);	
@@ -74,17 +75,27 @@ public class LoginController {
 		ModelAndView mav = new ModelAndView();
 		Manager m = adminServ.findByUserName(login_info.getParameter("username"));
 		if(m == null) {
+			System.out.println("用户名不存在");
 			mav.setViewName("redirect:/admin");
 		}else if(!m.getPwd().equals(login_info.getParameter("pwd"))) {
+			System.out.println("密码不正确");
 			mav.setViewName("redirect:/admin");
 		}else {
 			mav.setViewName("admin/admin_manager");
-			session.setAttribute("loginUser", m);
+			session.setAttribute("loginManager", m);
 			mav.addAllObjects(newsServ.getAllNewsByType());
 			mav.addObject("userNum", adminServ.userCount());
 			mav.addObject("newsAllNum", newsServ.getNewsNum());
 			
 		}
 		return mav;
+	}
+	
+	@RequestMapping(value="/userLogout",method=RequestMethod.GET)
+	public @ResponseBody String userLogout(HttpSession session) {
+		System.out.println("退出之前：" + session.getAttribute("loginUser"));
+		session.removeAttribute("loginUser");
+		System.out.println("退出之后：" + session.getAttribute("loginUser"));
+		return "success";
 	}
 }

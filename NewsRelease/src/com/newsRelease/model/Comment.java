@@ -1,15 +1,20 @@
 package com.newsRelease.model;
 
 import java.sql.Timestamp;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  * Comment entity. @author MyEclipse Persistence Tools
@@ -25,7 +30,7 @@ public class Comment extends com.newsRelease.model.BaseModel implements
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private CommentId id;
+	private String id;
 	private User user;
 	private News news;
 	private String commentContent;
@@ -38,7 +43,7 @@ public class Comment extends com.newsRelease.model.BaseModel implements
 	}
 
 	/** full constructor */
-	public Comment(CommentId id, User user, News news, String commentContent,
+	public Comment(String id, User user, News news, String commentContent,
 			Timestamp commentPubTime) {
 		this.id = id;
 		this.user = user;
@@ -47,21 +52,21 @@ public class Comment extends com.newsRelease.model.BaseModel implements
 		this.commentPubTime = commentPubTime;
 	}
 
-	// Property accessors
-	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "userId", column = @Column(name = "user_id", nullable = false, length = 20)),
-			@AttributeOverride(name = "newsId", column = @Column(name = "news_id", nullable = false, length = 20)) })
-	public CommentId getId() {
+
+	@Id
+	@GeneratedValue(generator = "paymentableGenerator")
+	@GenericGenerator(name = "paymentableGenerator", strategy="uuid")
+	@Column(name = "comment_id", unique = true, nullable = false, length = 128)
+	public String getId() {
 		return this.id;
 	}
 
-	public void setId(CommentId id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "user_id", nullable = false)
 	public User getUser() {
 		return this.user;
 	}
@@ -71,7 +76,7 @@ public class Comment extends com.newsRelease.model.BaseModel implements
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "news_id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "news_id", nullable = false)
 	public News getNews() {
 		return this.news;
 	}

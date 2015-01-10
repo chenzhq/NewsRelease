@@ -194,9 +194,10 @@
                     data: JSON.stringify($('#register').serializeObject()),
                     success: function(data, textStatus, xhr) {
                             console.log("注册成功");
-                            window.login_state = "true";
-                            $('#login_info').css('display', 'block');
-                            $('#reg_log_btn').css('display', 'none');
+                            $('.login_info').css('display', 'block');
+                            $('.login_info').html(data.loginUser.name);
+                            $('.login_register').css('display', 'none');
+                            $('.logout').css('display', 'block');
                         }
                     });
             remodal.close();
@@ -220,29 +221,30 @@
 	                    dataType: 'json',
 	                    contentType:'application/json;charset=UTF-8',
 	                    data: JSON.stringify($('#login').serializeObject()),
+//	                    data: {"username": $('#login_name').val(),
+//	                    		"pwd": $('#login_pwd').val() },
 	                    success: function(data, textStatus, xhr) {
 	                        console.log(data);
 	                        if(data.msg == 'success') {
 	                            //登录成功
-	                            $('.login_register').css('display', 'none');
 	                            $('.login_info').css('display', 'block');
-	                            $('#login_info span').html(data.loginUser.username);
-                                window.login_state = "true";
-                                console.log(window.login_state);
-	                            remodal.close();
-	                        }
-	                        if(data.msg == 'userNotExist') {
-	                            //用户名不存在
-	                            $('#username_error').html("这个用户名好像还没注册呢");
-	                            $('#username_error').css('visibility', 'visible');
-	                        }
-	                        if(data.msg == 'NotMatch') {
-	                            //密码不正确
-	                            $('#pwd_error').html("密码好像记错了吧")
-	                            $('#pwd_error').css('visibility', 'visible');
-	                        }
-	                    }
-	                });
+                                $('.login_info').html(data.userName);
+                                $('.login_register').css('display', 'none');
+                                $('.logout').css('display', 'block');
+                                remodal.close();
+                            }
+                            if(data.msg == 'userNotExist') {
+                                //用户名不存在
+                                $('#username_error').html("这个用户名好像还没注册呢");
+                                $('#username_error').css('visibility', 'visible');
+                            }
+                            if(data.msg == 'NotMatch') {
+                                //密码不正确
+                                $('#pwd_error').html("密码好像记错了吧")
+                                $('#pwd_error').css('visibility', 'visible');
+                            }
+                        }
+                    });
         });
 
         // Add close button event listener
@@ -324,7 +326,7 @@
         if (current && current !== remodal) {
             current.$overlay.hide();
             current.$body.removeClass(pluginName + "_active");
-        }
+        }       
 
         current = remodal;
 
